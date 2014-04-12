@@ -1,8 +1,7 @@
 
-/*
- * GET home page.
- */
-
-exports.index = function(req, res){
-  res.render('index', { title: 'Express' });
+module.exports = function (app) {
+    app.get('/ping', function (req, res, next) {
+        res.json({result: 'pong'});
+    });
 };
+
