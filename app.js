@@ -9,6 +9,7 @@ var express = require('express'),
     path = require('path');
 
 GLOBAL.ROOT = __dirname;
+require(GLOBAL.ROOT + '/init/constants.js');
 
 var app = express();
 
@@ -32,6 +33,7 @@ if ('development' == app.get('env')) {
 app.namespace('/api/v1', function(){
     require('./routes/index')(app);
     require('./routes/identities')(app);
+    require('./routes/users')(app);
 });
 
 http.createServer(app).listen(app.get('port'), function(){

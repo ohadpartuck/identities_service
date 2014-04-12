@@ -1,0 +1,2 @@
+
+GLOBAL.DEFAULT_PROVIDER = 'facebook';
