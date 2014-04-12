@@ -1,4 +1,4 @@
-var identity    = require(GLOBAL.ROOT + '/lib/identities/identities.js');
+//var identity    = require(GLOBAL.ROOT + '/lib/identities/identities.js');
 
 module.exports = function (app) {
     app.namespace('/identity/:provider', function(){

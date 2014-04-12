@@ -32,8 +32,8 @@ if ('development' == app.get('env')) {
 }
 app.namespace('/api/v1', function(){
     require('./routes/index')(app);
-    require('./routes/identities')(app);
-    require('./routes/users')(app);
+    require('./routes/identity')(app);
+//    require('./routes/user')(app);
 });
 
 http.createServer(app).listen(app.get('port'), function(){
