@@ -11,6 +11,9 @@ var express = require('express'),
 GLOBAL.ROOT = __dirname;
 require(GLOBAL.ROOT + '/init/constants.js');
 
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/users');
+
 var app = express();
 
 // all environments
