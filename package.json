@@ -8,10 +8,10 @@
   "dependencies": {
     "express": "~4.0.0",
     "jade": "*",
-    "stylus": "*",
-    "nodemon ": "*",
     "express-namespace": "~0.1.1",
-    "mongoose": "~3.8.8",
-    "fbgraph": "^0.2.10"
-  }
+    "mongoose": "~3.8.8"
+  },
+    "devDependencies":{
+    "nodemon ": "*"
+    }
 }
