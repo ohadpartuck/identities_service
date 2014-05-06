@@ -1,5 +1,5 @@
 {
-  "name": "application-name",
+  "name": "users-service",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -9,9 +9,18 @@
     "express": "~4.0.0",
     "jade": "*",
     "express-namespace": "~0.1.1",
-    "mongoose": "~3.8.8"
+    "global_constants": "^0.1.2",
+    "mongoose": "~3.8.8",
+    "body-parser": "^1.0.2",
+    "underscore": "^1.6.0",
+    "passport": "^0.2.0",
+    "bcrypt-nodejs": "0.0.3",
+    "crypto": "0.0.3",
+    "express-validator": "^2.1.2",
+    "passport-local": "^1.0.0",
+    "async": "^0.8.0"
   },
-    "devDependencies":{
+  "devDependencies": {
     "nodemon ": "*"
-    }
+  }
 }

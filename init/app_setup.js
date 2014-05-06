@@ -1,16 +1,22 @@
 var global_constants         = require('global_constants'),
     extend                   = require('util')._extend,
-    bodyParser               = require('body-parser');
-    queryString              = require('querystring');
+    bodyParser               = require('body-parser'),
+    queryString              = require('querystring'),
+    passport                 = require('passport'),
+    expressValidator         = require('express-validator');
 
     module.exports = function (app) {
 
     MAIN_CONFIG          = require('../configuration/main/' + ENV + '.json')    ;
 
     SANGER_CONFIG        = require_settings('sanger');
+
     SANGER_CONSTATNTS    = global_constants['sanger']['sanger_constants'];
 
-    app.use(bodyParser()); //to get params in req.body
+    app.use(bodyParser());              //to get params in req.body
+    app.use(passport.initialize());     //passport is for user authorization
+//    app.use(passport.session());        //passport is for user authorization - needed here ??
+    app.use(expressValidator());        //params validations
 
     defineGlobalFunctions();
 };
@@ -27,6 +33,9 @@ function defineGlobalFunctions(){
     //TODO - all these function - extract to a helper node module
     isProduction                = function() { return ENV == 'production' };
     useStub                     = function(use_stub_setting) { return use_stub_setting && !isProduction() };
+    GenericError                = function(msg){
+        console.error(msg);
+    };
     GenericOnGetError           = function(params){
         //TODO - catch all errors not here but by emitting an event
         console.log('GenericOnGetError got this ' + JSON.stringify(params));
