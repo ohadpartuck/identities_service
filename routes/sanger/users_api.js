@@ -30,5 +30,7 @@ module.exports = function (router, namespace) {
         res.json({'reset_token_post': true});
     });
 
+    router = require('./social_api')(router, '');
+
     return router;
 };

@@ -1,5 +1,5 @@
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+var passport                = require('passport');
+var LocalStrategy           = require('passport-local').Strategy;
 
 // Sign in using Email and Password.
 
@@ -25,3 +25,6 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(user, done) {
     done(null, user);
 });
+
+
+require('./social_sign_in');

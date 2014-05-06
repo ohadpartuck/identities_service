@@ -18,7 +18,8 @@
     "crypto": "0.0.3",
     "express-validator": "^2.1.2",
     "passport-local": "^1.0.0",
-    "async": "^0.8.0"
+    "async": "^0.8.0",
+    "passport-facebook": "^1.0.3"
   },
   "devDependencies": {
     "nodemon ": "*"
