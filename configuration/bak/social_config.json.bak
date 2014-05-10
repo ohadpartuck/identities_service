@@ -1,0 +1,10 @@
+{
+    "development":{
+        "facebook":{
+            "clientID":  "727304957314097",
+            "clientSecret":  "9477e749ebc28bca7af4272d6be19cb1",
+            "callbackURL": "/auth/facebook/callback",
+            "passReqToCallback": true
+        }
+    }
+}
