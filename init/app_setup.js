@@ -14,9 +14,11 @@ module.exports = function (app) {
 
     SANGER_CONSTATNTS    = global_constants['sanger']['sanger_constants'];
 
+
+
     app.use(bodyParser());              //to get params in req.body
     app.use(passport.initialize());     //passport is for user authorization
-//    app.use(passport.session());        //passport is for user authorization - needed here ??
+    app.use(passport.session());        //passport is for user authorization - needed here ??
     app.use(expressValidator());        //params validations
 
 };
@@ -28,4 +30,6 @@ function require_settings(namespace){
         by_env                  = require('../configuration/' + namespace + '/' + ENV + '.json');
     return extend(defaults, by_env);
 }
+
+
 

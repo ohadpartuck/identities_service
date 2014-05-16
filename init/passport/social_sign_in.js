@@ -1,6 +1,9 @@
 var passport                = require('passport');
 var FacebookStrategy        = require('passport-facebook').Strategy;
 var social_config           = require('../../configuration/main/social_config')[ENV];
+var userSchema = require('../../app/models/user_schema');
+
+User = SANGER_MONGO_CONN.model('User', userSchema);
 
 
 /**
@@ -25,8 +28,8 @@ passport.use(new FacebookStrategy(social_config.facebook, function(req, accessTo
     if (req.user) {
         User.findOne({ facebook: profile.id }, function(err, existingUser) {
             if (existingUser) {
-                req.json({ msg: 'There is already a Facebook account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
-//                done(err);
+//                msgs.push({info: 'There is already a Facebook account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+                done(err, existingUser);
             } else {
                 User.findById(req.user.id, function(err, user) {
                     user.facebook = profile.id;
@@ -35,33 +38,40 @@ passport.use(new FacebookStrategy(social_config.facebook, function(req, accessTo
                     user.profile.gender = user.profile.gender || profile._json.gender;
                     user.profile.picture = user.profile.picture || 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
                     user.save(function(err) {
-                        req.json({ msg: 'Facebook account has been linked.' });
-//                        done(err, user);
+//                        msgs.push({ info: 'Facebook account has been linked.' });
+                        done(err, user);
                     });
                 });
             }
         });
     } else {
-        User.findOne({ facebook: profile.id }, function(err, existingUser) {
-            if (existingUser) return done(null, existingUser);
-            User.findOne({ email: profile._json.email }, function(err, existingEmailUser) {
-                if (existingEmailUser) {
-                    req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Facebook manually from Account Settings.' });
-                    done(err);
-                } else {
-                    var user = new User();
-                    user.email = profile._json.email;
-                    user.facebook = profile.id;
-                    user.tokens.push({ kind: 'facebook', accessToken: accessToken });
-                    user.profile.name = profile.displayName;
-                    user.profile.gender = profile._json.gender;
-                    user.profile.picture = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
-                    user.profile.location = (profile._json.location) ? profile._json.location.name : '';
-                    user.save(function(err) {
-                        done(err, user);
-                    });
-                }
-            });
-        });
+        findOrCreateUser(profile, profile._json.email, done, accessToken);
     }
 }));
+
+
+function findOrCreateUser(profile, email, done, accessToken){
+    User.findOne({ facebook: profile.id }, function(err, existingUser) {
+        if (existingUser) return done(null, existingUser);
+        User.findOne({ email: email }, function(err, existingEmailUser) {
+            if (existingEmailUser) {
+//                msgs.push({ info: 'There is already an account using this email address. Sign in to that account and link it with Facebook manually from Account Settings.' });
+                done(err, existingEmailUser);
+            } else {
+                var user = new User();
+                user.email = email;
+                user.facebook = profile.id;
+                user.tokens.push({ kind: 'facebook', accessToken: accessToken });
+                user.profile.name = profile.displayName;
+                user.profile.gender = profile._json.gender;
+                user.profile.picture = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
+                user.profile.location = (profile._json.location) ? profile._json.location.name : '';
+                user.save(function(err) {
+//                        done(err, user);
+                });
+                //not waiting for saving in Mongo
+                done(null, user);
+            }
+        });
+    });
+}

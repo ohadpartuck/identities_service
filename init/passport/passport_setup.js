@@ -1,5 +1,20 @@
 var passport                = require('passport');
 var LocalStrategy           = require('passport-local').Strategy;
+var userSchema              = require('../../app/models/user_schema');
+
+User = SANGER_MONGO_CONN.model('User', userSchema);
+
+
+//TO log in and create user session?? maybe move this to the api service
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+        done(err, user);
+    });
+});
 
 // Sign in using Email and Password.
 
@@ -15,16 +30,6 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
         });
     });
 }));
-
-
-//TO log in and create user session?? maybe move this to the api service
-passport.serializeUser(function(user, done) {
-    done(null, user);
-});
-
-passport.deserializeUser(function(user, done) {
-    done(null, user);
-});
 
 
 require('./social_sign_in');
