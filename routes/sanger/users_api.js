@@ -1,8 +1,8 @@
 var loginOrOut = require('../../lib/helpers/login'),
     signup     = require('../../lib/helpers/signup'),
     forgotPass = require('../../lib/helpers/forgot_pass'),
+    passport = require('passport');
     userSchema = require('../../app/models/user_schema');
-var passport        = require('passport');
 
 User = SANGER_MONGO_CONN.model('User', userSchema);
 
@@ -31,13 +31,15 @@ module.exports = function (router, namespace) {
         res.json({'reset_token_post': true});
     });
 
-    router.get(namespace + '/auth/:providerName/callback', passport.authenticate('facebook', {assignProperty: 'user'}), function(req, res) {
-        res.json({auth: req.params.providerName, session: req._passport, user: req['user']})
+    //TODO - make this a general route for all social (couldn't do it with socialSignInMiddleware)
+    router.get(namespace + '/auth/facebook/callback', passport.authenticate('facebook', {assignProperty: 'user'}), function(req, res) {
+        res.json({auth: 'facebook', user: req['user']})
     });
 
+//    router.get(namespace + '/auth/twitter/callback',  passport.authenticate('twitter', {assignProperty: 'user'}), function(req, res) {
+//        res.json({auth: 'twitter', user: req['user']})
+//    });
 
-
-//    router = require('./social_api')(router, '');
 
     return router;
 };
