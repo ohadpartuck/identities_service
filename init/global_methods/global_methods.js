@@ -1,6 +1,7 @@
 //TODO - all these function - extract to a helper node module
-var crypto = require('crypto');
-var passport   = require('passport');
+var crypto          = require('crypto');
+var passport        = require('passport');
+var postman         = require('rest_postman')(POSTMAN_CONFIG);
 
 
 isProduction                = function() { return ENV == 'production' };
@@ -65,6 +66,44 @@ initial_gravatar = function(email, size, defaults){
     return 'https://gravatar.com/avatar/' + md5.digest('hex').toString() + '?s=' + size + '&d=' + defaults;
 };
 
-socialSignInMiddleware = function(req, res, next){
-    passport.authenticate(req.params.providerName, {assignProperty: 'user'})
+//socialSignInMiddleware = function(req, res, next){
+//    passport.authenticate(req.params.providerName, {assignProperty: 'user'})
+//};
+
+indexInElastic = function(user, profile, elasticPrefix, socialProvider){
+
+    var payload  = gatherInput(user, profile, socialProvider);
+
+    //TODO - fill in here. put to elastic searcher
+    postman.put('elastic_searcher',
+        elasticPrefix,
+        payload,
+        genericOnElasticError,
+        onElasticIndexSuccess);
+};
+
+gatherInput = function(user, profile, socialProvider){
+    var payload                             = {},
+        data                                = {},
+        doc                                 = profile;
+
+    doc['user_id']                          = user.id;
+    data[socialProvider]                    = doc;
+    payload['data']                         = data;
+    payload[MAIN['bson_id']]                = user._doc._id.toString();
+    return payload;
+};
+
+genericOnElasticError = function(params, defaultValue){
+    //TODO send errors to graylog
+    console.log(params);
+    return defaultValue;
+};
+
+onElasticIndexSuccess = function(url, response){
+    genericOnElasticSuccess(url, response);
+};
+
+genericOnElasticSuccess = function(url, response){
+    console.log('success response from ' + url + '. response is ' + response);
 };

@@ -5,6 +5,40 @@
             "clientSecret":  "9477e749ebc28bca7af4272d6be19cb1",
             "callbackURL": "/auth/facebook/callback",
             "passReqToCallback": true
-        }
+        },
+         "instagram": {
+             "clientID":  "9f5c39ab236a48e0aec354acb77eee9b",
+             "clientSecret":  "5920619aafe842128673e793a1c40028",
+             "callbackURL": "/auth/instagram/callback",
+             "passReqToCallback": true
+         },
+         "github": {
+             "clientID": "cb448b1d4f0c743a1e36",
+             "clientSecret":  "815aa4606f476444691c5f1c16b9c70da6714dc6",
+             "callbackURL": "/auth/github/callback",
+             "passReqToCallback": true
+         },
+
+         "twitter": {
+             "consumerKey": "6NNBDyJ2TavL407A3lWxPFKBI",
+             "consumerSecret":  "ZHaYyK3DQCqv49Z9ofsYdqiUgeoICyh6uoBgFfu7OeYC7wTQKa",
+             "callbackURL": "/auth/twitter/callback",
+             "passReqToCallback": true
+         },
+
+         "google": {
+             "clientID":  "828110519058.apps.googleusercontent.com",
+             "clientSecret":  "JdZsIaWhUFIchmC1a_IZzOHb",
+             "callbackURL": "/auth/google/callback",
+             "passReqToCallback": true
+         },
+
+         "linkedin": {
+             "clientID":  "77chexmowru601",
+             "clientSecret":  "szdC8lN2s2SuMSy8",
+             "callbackURL": "/auth/linkedin/callback",
+             "scope": ["r_fullprofile", "r_emailaddress", "r_network"],
+             "passReqToCallback": true
+         }
     }
 }

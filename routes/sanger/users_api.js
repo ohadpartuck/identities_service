@@ -1,6 +1,6 @@
 var loginOrOut = require('../../lib/helpers/login'),
     signup     = require('../../lib/helpers/signup'),
-    forgotPass = require('../../lib/helpers/forgot_pass'),
+//    forgotPass = require('../../lib/helpers/forgot_pass'),
     passport = require('passport');
     userSchema = require('../../app/models/user_schema');
 
@@ -19,17 +19,17 @@ module.exports = function (router, namespace) {
         signup.postSignup(req, res, next, User);
     });
 
-    router.get(namespace + '/forgot', function(req, res) {
-        forgotPass.getForgot(req, res, User);
-    });
-
-    router.post(namespace + '/forgot', function(req, res, next) {
-        forgotPass.postForgot(req, res, next, User);
-    });
-
-    router.post(namespace + '/reset/:token', function(req, res) {
-        res.json({'reset_token_post': true});
-    });
+//    router.get(namespace + '/forgot', function(req, res) {
+//        forgotPass.getForgot(req, res, User);
+//    });
+//
+//    router.post(namespace + '/forgot', function(req, res, next) {
+//        forgotPass.postForgot(req, res, next, User);
+//    });
+//
+//    router.post(namespace + '/reset/:token', function(req, res) {
+//        res.json({'reset_token_post': true});
+//    });
 
     //TODO - make this a general route for all social (couldn't do it with socialSignInMiddleware)
     router.get(namespace + '/auth/facebook/callback', passport.authenticate('facebook', {assignProperty: 'user'}), function(req, res) {

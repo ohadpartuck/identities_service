@@ -1,6 +1,6 @@
 {
     "globals" : {
     },
-    "skip_elastic_service" : true
+    "skip_elastic_service" : false
 }
 

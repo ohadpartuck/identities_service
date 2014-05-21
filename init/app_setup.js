@@ -1,19 +1,19 @@
 var global_constants         = require('global_constants'),
     extend                   = require('util')._extend,
     bodyParser               = require('body-parser'),
-    queryString              = require('querystring'),
     passport                 = require('passport'),
     expressValidator         = require('express-validator');
 
 
 module.exports = function (app) {
 
-    MAIN_CONFIG          = require('../configuration/main/' + ENV + '.json')    ;
+    MAIN_CONFIG          = require('../configuration/main/' + ENV);
+    POSTMAN_CONFIG       = require('../configuration/main/postman')[ENV];
 
     SANGER_CONFIG        = require_settings('sanger');
 
-    SANGER_CONSTATNTS    = global_constants['sanger']['sanger_constants'];
-
+    MAIN                 = global_constants['main'];
+    SANGER               = global_constants['sanger']['sanger_constants'];
 
 
     app.use(bodyParser());              //to get params in req.body

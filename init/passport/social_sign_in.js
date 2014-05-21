@@ -8,7 +8,10 @@ var FacebookStrategy        = require('passport-facebook').Strategy;
 //var OAuthStrategy           = require('passport-oauth').OAuthStrategy; // Tumblr
 //var OAuth2Strategy          = require('passport-oauth').OAuth2Strategy; // Venmo, Foursquare
 var social_config           = require('../../configuration/main/social_config')[ENV];
-var userSchema = require('../../app/models/user_schema');
+var userSchema              = require('../../app/models/user_schema');
+var skip_elastic            = MAIN_CONFIG['skip_elastic_service'];
+var elasticPrefix          = 'sanger/v1/users';
+
 
 User = SANGER_MONGO_CONN.model('User', userSchema);
 
@@ -65,28 +68,45 @@ function findOrCreateUser(socialProvider, profile, email, done, accessToken){
     var SearchParams = GetSearchParams(socialProvider, profile.id);
 
     User.findOne(SearchParams, function(err, existingUser) {
-        if (existingUser) return done(null, existingUser);
+        if (existingUser){
+            if (!skip_elastic && skip_elastic != undefined) indexInElastic(existingUser, profile, elasticPrefix, socialProvider);
+            return done(null, existingUser);
+        }
 
         User.findOne({ email: email }, function(err, existingEmailUser) {
             if (existingEmailUser) {
                 //TODO - take picture from social if new user and he has the default gravatar
+                if (!skip_elastic && skip_elastic != undefined) indexInElastic(existingEmailUser, profile, elasticPrefix, socialProvider);
                 done(err, existingEmailUser);
             } else {
-                var user = new User();
-                user.email = email;
-                user[socialProvider] = profile.id;
-                user.tokens.push({ kind: socialProvider, accessToken: accessToken });
-                user.profile.name = profile.displayName;
-                user.profile.gender = profile._json.gender;
-                user.profile.picture = pictureUrlByProvider(email, profile, socialProvider);
-                user.profile.location = (profile._json.location) ? profile._json.location.name : '';
-                user.save(function(err) {});
+                var user = saveSocialDataToUser(email, profile, socialProvider, accessToken);
                 //not waiting for saving in Mongo
                 done(null, user);
             }
         });
     });
 }
+
+function saveSocialDataToUser(email, profile, socialProvider, accessToken){
+    var user = new User();
+    user.email = email;
+    user[socialProvider] = profile.id;
+    user.tokens.push({ kind: socialProvider, accessToken: accessToken });
+    user.profile.name = profile.displayName;
+    user.profile.gender = profile._json.gender;
+    user.profile.picture = pictureUrlByProvider(email, profile, socialProvider);
+    user.profile.location = (profile._json.location) ? profile._json.location.name : '';
+    user.save(function(err) {
+        if (err){
+            console.log(err);
+        }else{
+            if (!skip_elastic && skip_elastic != undefined) indexInElastic(user, profile, elasticPrefix, socialProvider);
+        }
+    });
+
+    return user;
+}
+
 
 function GetSearchParams(socialProvider, profile_id){
     var searchObject = {};

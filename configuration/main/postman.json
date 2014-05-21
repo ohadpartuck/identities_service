@@ -1,0 +1,23 @@
+{
+    "development":{
+        "services": {
+            "api": {
+                "url" : "http://localhost:9000/"
+            },
+            "elastic_searcher": {
+                "url" : "http://localhost:9003/"
+            }
+        }
+    },
+    "production":{
+        "services": {
+            "api": {
+                "url" : "http://localhost:9000/"
+            },
+            "elastic_searcher": {
+                "url" : "http://localhost:9003/"
+            }
+        }
+    }
+
+}
