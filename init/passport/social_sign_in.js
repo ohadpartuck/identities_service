@@ -13,7 +13,7 @@ var skip_elastic            = MAIN_CONFIG['skip_elastic_service'];
 var elasticPrefix          = 'sanger/v1/users';
 
 
-User = SANGER_MONGO_CONN.model('User', userSchema);
+User = MAIN_MONGO_CONN.model('User', userSchema);
 
 
 /**

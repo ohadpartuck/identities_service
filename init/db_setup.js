@@ -1,7 +1,7 @@
 var mongoose                = require('mongoose');
 
-sanger_mongo_hosts          = SANGER_CONFIG['mongodb']['hosts'];
-SANGER_MONGO_CONN           = mongoose.createConnection(sanger_mongo_hosts);
+main_mongo_hosts          = MAIN_CONFIG['mongodb']['hosts'];
+MAIN_MONGO_CONN           = mongoose.createConnection(main_mongo_hosts);
 
 
 mongoose.connection.on('error', function() {

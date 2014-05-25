@@ -7,7 +7,10 @@ var global_constants         = require('global_constants'),
 
 module.exports = function (app) {
 
-    MAIN_CONFIG          = require('../configuration/main/' + ENV);
+    var config           = require('../configuration/main/' + ENV);
+    var globals          = require('../configuration/main/globals')[ENV];
+
+    MAIN_CONFIG          = extend(config, globals);
     POSTMAN_CONFIG       = require('../configuration/main/postman')[ENV];
 
     SANGER_CONFIG        = require_settings('sanger');

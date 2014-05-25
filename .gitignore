@@ -25,3 +25,4 @@ build/Release
 node_modules
 
 configuration/main/social_config.json
+configuration/main/globals.json

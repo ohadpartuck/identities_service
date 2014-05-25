@@ -2,7 +2,7 @@ var passport                = require('passport');
 var LocalStrategy           = require('passport-local').Strategy;
 var userSchema              = require('../../app/models/user_schema');
 
-User = SANGER_MONGO_CONN.model('User', userSchema);
+User = MAIN_MONGO_CONN.model('User', userSchema);
 
 
 //TO log in and create user session?? maybe move this to the api service

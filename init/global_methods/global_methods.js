@@ -1,8 +1,10 @@
 //TODO - all these function - extract to a helper node module
+//CALL TO other globals
+require('./routes_methods');
+
 var crypto          = require('crypto');
 var passport        = require('passport');
 var postman         = require('rest_postman')(POSTMAN_CONFIG);
-
 
 isProduction                = function() { return ENV == 'production' };
 useStub                     = function(use_stub_setting) { return use_stub_setting && !isProduction() };
